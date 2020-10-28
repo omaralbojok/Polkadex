@@ -22,6 +22,7 @@ mod mock;
 mod tests;
 pub mod data_structure;
 pub mod data_structure_rpc;
+mod benchmarks;
 
 
 pub trait Trait: frame_system::Trait + pallet_generic_asset::Trait {

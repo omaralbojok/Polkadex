@@ -6,6 +6,5 @@ members = [
     'node',
     'pallets/polkadex',
     'runtime',
-    'pallets/polkadex/runtime-api',
-
+    'pallets/polkadex/runtime-api'
 ]

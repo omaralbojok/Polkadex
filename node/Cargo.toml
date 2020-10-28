@@ -151,3 +151,6 @@ runtime-api = { path = "../pallets/polkadex/runtime-api" }
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc6'
 version = '2.0.0-rc6'
+
+# LATER ADDED (Benchmark)
+runtime-benchmarks = [ "polkadex/runtime-benchmarks" ]

@@ -56,6 +56,12 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc6'
 version = '2.0.0-rc6'
 
+[dependencies.frame-benchmarking]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc6'
+version = '2.0.0-rc6'
+
 [dependencies.pallet-balances]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
@@ -216,6 +222,7 @@ std = [
     'frame-system/std',
     'frame-system-rpc-runtime-api/std',
     'pallet-babe/std',
+    'frame-benchmarking/std',
     'pallet-balances/std',
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
@@ -241,6 +248,8 @@ std = [
     'sp-version/std',
     'polkadex/std',
 ]
+
+runtime-benchmarks = [ "polkadex/runtime-benchmarks" ]
 
 [build-dependencies.wasm-builder-runner]
 git = 'https://github.com/paritytech/substrate.git'
