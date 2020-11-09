@@ -1,3 +1,7 @@
+
+
+
+
 // IMPORTANT NOTE
 // This is a simple tutorial that shows how to retrieve market data from Polkadex nodes in real time
 // These data can be used to do technical analysis off-chain and place trades accordingly.
@@ -60,22 +64,22 @@ async function polkadex_market_data() {
         },
     });
 
-
-    const tradingPairID = "0xf28a3c76161b8d5723b6b8b092695f418037c747faa2ad8bc33d8871f720aac9";
     const FixedU128_denominator = 1000000000000000000;
 
-    const GenesisTime = Date.parse('09 Nov 2020 00:00:00 GMT');
-    const blockPeriod = 3;
-    // Now there are some trades executing in the system so now let's listen for market data updates from Polkadex
-    api.derive.chain.subscribeNewHeads((header) => {
-        api.query.polkadex.marketInfo(tradingPairID, header.number).then(market_data => {
-            console.log(` 
-                          Date: ${GenesisTime + (header.number)*blockPeriod}
-                          Low: ${market_data.low / FixedU128_denominator} 
-                          High: ${market_data.high / FixedU128_denominator}
-                          Volume: ${market_data.volume / FixedU128_denominator}
-                          Open: ${market_data.open / FixedU128_denominator}
-                          Close: ${market_data.close / FixedU128_denominator}`);
+    api.query.system.events((events) => {
+        console.log(`\nReceived ${events.length} events:`);
+
+        // Loop through the Vec<EventRecord>
+        events.forEach((record) => {
+            // Extract the phase, event and the event types
+            const { event,phase } = record;
+            const types = event.typeDef;
+
+            if((event.section === "polkadex") && (event.method === "FulfilledLimitOrder" || event.method === "PartialFillLimitOrder")){
+                console.log(`\t\t\t${types[2].type}: ${event.data[2].toString()}`) // TODO: @Rudar use this as the code for last transaction
+                console.log(`\t\t\tPrice: ${event.data[3]/FixedU128_denominator}`) // TODO: @Rudar Use this as the last transaction value
+                // TODO: @Rudar if event.data[2].toString() === AskLimit then Red Color, if BidLimit then green color
+            }
         });
     });
 
