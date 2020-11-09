@@ -7,7 +7,7 @@
 // Polkadex team is not associated with Binance in any way.
 
 // Import
-const {ApiPromise, WsProvider, Keyring} = require('@polkadot/api');
+const {ApiPromise, WsProvider} = require('@polkadot/api');
 
 const wsProvider = new WsProvider('ws://0.0.0.0:9944');
 polkadex_market_data().then();
@@ -69,7 +69,8 @@ async function polkadex_market_data() {
     // Now there are some trades executing in the system so now let's listen for market data updates from Polkadex
     api.derive.chain.subscribeNewHeads((header) => {
         api.query.polkadex.marketInfo(tradingPairID, header.number).then(market_data => {
-            console.log(` Date: ${GenesisTime + (header.number)*blockPeriod}
+            console.log(` 
+                          Date: ${GenesisTime + (header.number)*blockPeriod}
                           Low: ${market_data.low / FixedU128_denominator} 
                           High: ${market_data.high / FixedU128_denominator}
                           Volume: ${market_data.volume / FixedU128_denominator}
@@ -77,4 +78,7 @@ async function polkadex_market_data() {
                           Close: ${market_data.close / FixedU128_denominator}`);
         });
     });
+
+    // TODO: @Rudar For the latest trade price, use the latest close value
+
 }
