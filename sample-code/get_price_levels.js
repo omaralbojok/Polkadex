@@ -82,81 +82,6 @@ async function polkadex_market_data() {
             "LookupSource": "AccountId",
             "Address": "AccountId"
         },
-        // rpc: {
-        //     "polkadex":{
-        //         "get_orderbook":{
-        //             description: "Gets the current best ask & bid price",
-        //             params: [
-        //                 {
-        //                     name:"trading_pair",
-        //                     type:"H256"
-        //                 },
-        //                 {
-        //                     name: 'at',
-        //                     type: 'Hash',
-        //                     isOptional: true
-        //                 }
-        //             ],
-        //             type: "OrderbookRpc"
-        //         },
-        //         "get_ask_level":{
-        //             description: "Gets the current ask levels",
-        //             params: [
-        //                 {
-        //                     name:"trading_pair",
-        //                     type:"H256"
-        //                 },
-        //                 {
-        //                     name: 'at',
-        //                     type: 'Hash',
-        //                     isOptional: true
-        //                 }
-        //             ],
-        //             type: "Vec<FixedU128>"
-        //         },
-        //         "get_bid_level":{
-        //             description: "Gets the current bid levels",
-        //             params: [
-        //                 {
-        //                     name:"trading_pair",
-        //                     type:"H256"
-        //                 },
-        //                 {
-        //                     name: 'at',
-        //                     type: 'Hash',
-        //                     isOptional: true
-        //                 }
-        //             ],
-        //             type: "Vec<FixedU128>"
-        //         },
-        //         "get_all_orderbook":{
-        //             description: "Gets all orderbooks",
-        //             params: [
-        //                 {
-        //                     name: 'at',
-        //                     type: 'Hash',
-        //                     isOptional: true
-        //                 }
-        //             ],
-        //             type: "Vec<OrderbookRpc>"
-        //         },
-        //         "get_price_level":{
-        //             description: "Gets all pricelevels for the given trading pair",
-        //             params: [
-        //                 {
-        //                     name:"trading_pair",
-        //                     type:"H256"
-        //                 },
-        //                 {
-        //                     name: 'at',
-        //                     type: 'Hash',
-        //                     isOptional: true
-        //                 }
-        //             ],
-        //             type: "Vec<LinkedPriceLevelRpc>"
-        //         },
-        //     },
-        // }
     });
 
     const FixedU128_denominator = 1000000000000000000;
@@ -173,7 +98,7 @@ async function polkadex_market_data() {
         api.query.polkadex.priceLevels.entries(tradingPairID).then((levels) => {
             // console.log(levels.toString())
             levels.forEach(([key, level]) => {
-                console.log('     Price:', key.toHuman()[1]/FixedU128_denominator); // TODO: @Rudar there is something we need to do with best_bid and best_ask, I wil explain it on call.
+                console.log('     Price:', parseFloat(key.toHuman()[1].replace(/,/g, ''))/FixedU128_denominator); // TODO: @Rudar there is something we need to do with best_bid and best_ask, I wil explain it on call.
                 console.log('     level:', level.orders.toHuman()); // TODO: @Rudar loop through the each order and add up the quantity.
             });
         })
