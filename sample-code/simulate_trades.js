@@ -93,15 +93,15 @@ async function polkadex_market_data() {
     // Create first token - Say USDT
     await api.tx.genericAsset.create([total_issuance, options]).signAndSend(alice, {nonce: 0});
     // Create second token - Say BTC
-    await api.tx.genericAsset.create([total_issuance, options]).signAndSend(bob, {nonce: 0});
+    await api.tx.genericAsset.create([total_issuance, options]).signAndSend(alice, {nonce: 1});
     // Note token created first has Token ID as 1 and second token has ID 2.
     // Create the tradingPair BTC/USDT - (2,1)
-    await api.tx.polkadex.registerNewOrderbook(2, 1).signAndSend(alice, {nonce: 1});
+    await api.tx.polkadex.registerNewOrderbook(2, 1).signAndSend(alice, {nonce: 2});
 
 
     // Let's simulate some traders
-    let alice_nonce = 2;
-    let bob_nonce = 1;
+    let alice_nonce = 3;
+
     binance.websockets.trades(['ETHBTC'], (trades) => {
         let {e: eventType, E: eventTime, s: symbol, p: price, q: quantity, m: maker, a: tradeId} = trades;
         // console.info(symbol+" trade update. price: "+price+", quantity: "+quantity+", BUY: "+maker);
@@ -111,8 +111,8 @@ async function polkadex_market_data() {
             alice_nonce = alice_nonce + 1;
         } else {
             api.tx.polkadex.submitOrder("AskLimit", tradingPairID, (parseFloat(price) * UNIT),
-                (parseFloat(quantity) * UNIT)).signAndSend(bob, {nonce: bob_nonce});
-            bob_nonce = bob_nonce + 1;
+                (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce});
+            alice_nonce = alice_nonce + 1;
         }
     });
 }
