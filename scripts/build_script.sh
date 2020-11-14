@@ -1,5 +1,3 @@
-git clone https://github.com/Polkadex-Substrate/Polkadex.git
-git checkout frontend-sample-code
 curl https://getsubstrate.io -sSf | bash -s -- --fast
 # shellcheck disable=SC1090
 source ~/.cargo/env
