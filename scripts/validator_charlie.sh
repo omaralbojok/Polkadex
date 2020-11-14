@@ -1,5 +1,5 @@
 ../target/release/node-polkadex \
-  --base-path /tmp/bob \
+  --base-path /tmp/charlie \
   --chain customSpecRaw.json \
   --charlie \
   --port 30334 \

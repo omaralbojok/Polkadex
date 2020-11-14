@@ -105,16 +105,19 @@ async function polkadex_market_data() {
     binance.websockets.trades(['ETHBTC'], (trades) => {
         let {e: eventType, E: eventTime, s: symbol, p: price, q: quantity, m: maker, a: tradeId} = trades;
         // console.info(symbol+" trade update. price: "+price+", quantity: "+quantity+", BUY: "+maker);
+        console.log("Trying to place new order")
         if (maker === true) {
             api.tx.polkadex.submitOrder("BidLimit", tradingPairID, (parseFloat(price) * UNIT),
-                (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce});
+                (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce}, (status) => {
+                console.log(status.status.toHuman());
+            });
             alice_nonce = alice_nonce + 1;
-            console.log("PLaced BidLimit")
         } else {
             api.tx.polkadex.submitOrder("AskLimit", tradingPairID, (parseFloat(price) * UNIT),
-                (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce});
+                (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce}, (status) => {
+                console.log(status.status.toHuman());
+            });
             alice_nonce = alice_nonce + 1;
-            console.log("PLaced AskLimit")
         }
     });
 }
