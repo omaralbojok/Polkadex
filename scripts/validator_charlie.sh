@@ -3,8 +3,8 @@
   --chain customSpecRaw.json \
   --charlie \
   --port 30334 \
-  --ws-port 9945 \
-  --rpc-port 9934 \
+  --ws-port 9944 \
+  --rpc-port 9933 \
   --validator \
   --node-key 0000000000000000000000000000000000000000000000000000000000000003 \
   --bootnodes /ip4/54.183.253.27/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
