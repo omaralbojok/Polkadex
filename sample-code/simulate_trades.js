@@ -20,7 +20,7 @@ const binance = new Binance().options({
 });
 
 
-const wsProvider = new WsProvider('ws://0.0.0.0:9944');
+const wsProvider = new WsProvider('ws://localhost:9944');
 polkadex_market_data().then();
 
 
@@ -109,10 +109,12 @@ async function polkadex_market_data() {
             api.tx.polkadex.submitOrder("BidLimit", tradingPairID, (parseFloat(price) * UNIT),
                 (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce});
             alice_nonce = alice_nonce + 1;
+            console.log("PLaced BidLimit")
         } else {
             api.tx.polkadex.submitOrder("AskLimit", tradingPairID, (parseFloat(price) * UNIT),
                 (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce});
             alice_nonce = alice_nonce + 1;
+            console.log("PLaced AskLimit")
         }
     });
 }

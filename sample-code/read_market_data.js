@@ -9,7 +9,7 @@
 // Import
 const {ApiPromise, WsProvider} = require('@polkadot/api');
 
-const wsProvider = new WsProvider('ws://0.0.0.0:9944');
+const wsProvider = new WsProvider('ws://localhost:9944');
 polkadex_market_data().then();
 
 
