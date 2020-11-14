@@ -127,7 +127,7 @@ pub const DAYS: BlockNumber = HOURS * 24;
 // Some BABE-specific stuff
 // 1 in 4 blocks (on average, not counting collisions) will be primary babe blocks.
 pub const PRIMARY_PROBABILITY: (u64, u64) = (1, 4);
-pub const EPOCH_DURATION_IN_BLOCKS: u32 = 10 * MINUTES;
+pub const EPOCH_DURATION_IN_BLOCKS: u32 = 2*DAYS;
 
 /// The version information used to identify this runtime when compiled natively.
 #[cfg(feature = "std")]
@@ -141,7 +141,7 @@ pub fn native_version() -> NativeVersion {
 parameter_types! {
 	pub const BlockHashCount: BlockNumber = 2400;
 	/// We allow for 1 seconds of compute with a 3 second average block time.
-	pub const MaximumBlockWeight: Weight = WEIGHT_PER_SECOND;
+	pub const MaximumBlockWeight: Weight = (2*WEIGHT_PER_SECOND)/3;
 	pub const AvailableBlockRatio: Perbill = Perbill::from_percent(75);
 	/// Assume 10% of weight for average on_initialize calls.
 	pub MaximumExtrinsicWeight: Weight = AvailableBlockRatio::get()

@@ -76,9 +76,19 @@ async function polkadex_market_data() {
             const types = event.typeDef;
 
             if((event.section === "polkadex") && (event.method === "FulfilledLimitOrder" || event.method === "PartialFillLimitOrder")){
-                console.log(`\t\t\t${types[2].type}: ${event.data[2].toString()}`) // TODO: @Rudar use this as the code for last transaction
-                console.log(`\t\t\tPrice: ${event.data[3]/FixedU128_denominator}`) // TODO: @Rudar Use this as the last transaction value
-                // TODO: @Rudar if event.data[2].toString() === AskLimit then Red Color, if BidLimit then green color
+                console.log(`\t\t\t${types[2].type}: ${event.data[2].toString()}`)
+                console.log(`\t\t\tPrice: ${event.data[3]/FixedU128_denominator}`)
+                // TODO: You need to save these price values in a list or queue and get the lenght of queue.
+                // TODO: Then delay = 2000/(lenght of queue) with that as delay pop prices from queue and update the last trade price and
+                // TODO: latest transaction
+
+
+            } else if ((event.section === "polkadex") && (event.method === "NewLimitOrder")){
+                // TODO: We need to create new rows under "Funds" section
+                // TODO: Date: current time, Pair: constant: BTC/ETH, Side: Buy if event.data[2].toString() == "BidLimit" else Sell
+                // TODO: Price: event.data[3]/FixedU128_denominator, Also, replace fee with Quantity which is event.data[4]/FixedU128_denominator
+                // TODO: Finally the Total will be price*quantity
+                // TODO: All values are limited to maximum 6 decimal precision
             }
         });
     });
