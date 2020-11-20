@@ -11,7 +11,7 @@
 const {ApiPromise, WsProvider, Keyring} = require('@polkadot/api');
 // Crypto promise, package used by keyring internally
 const {cryptoWaitReady} = require('@polkadot/util-crypto');
-
+const BN = require("bn.js")
 // Initialize Binance
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -81,8 +81,8 @@ async function polkadex_market_data() {
 
 
     const tradingPairID = "0xf28a3c76161b8d5723b6b8b092695f418037c747faa2ad8bc33d8871f720aac9";
-    const UNIT = 1000000000000;
-    const total_issuance = 1000 * UNIT;
+    const UNIT = new BN(1000000000000,10);
+    const total_issuance = UNIT.mul(UNIT);
     let options = {
         permissions: {
             update: null,
@@ -102,21 +102,16 @@ async function polkadex_market_data() {
     // Let's simulate some traders
     let alice_nonce = 3;
 
-    binance.websockets.trades(['ETHBTC'], (trades) => {
+    binance.websockets.trades(['BTCUSDT'], (trades) => {
         let {e: eventType, E: eventTime, s: symbol, p: price, q: quantity, m: maker, a: tradeId} = trades;
         // console.info(symbol+" trade update. price: "+price+", quantity: "+quantity+", BUY: "+maker);
-        console.log("Trying to place new order")
         if (maker === true) {
-            api.tx.polkadex.submitOrder("BidLimit", tradingPairID, (parseFloat(price) * UNIT),
-                (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce}, (status) => {
-                console.log(status.status.toHuman());
-            });
+            api.tx.polkadex.submitOrder("BidLimit", tradingPairID, new BN((parseFloat(price) * UNIT).toString()),
+                new BN((parseFloat(quantity) * UNIT).toString())).signAndSend(alice, {nonce: alice_nonce});
             alice_nonce = alice_nonce + 1;
         } else {
-            api.tx.polkadex.submitOrder("AskLimit", tradingPairID, (parseFloat(price) * UNIT),
-                (parseFloat(quantity) * UNIT)).signAndSend(alice, {nonce: alice_nonce}, (status) => {
-                console.log(status.status.toHuman());
-            });
+            api.tx.polkadex.submitOrder("AskLimit", tradingPairID,  new BN((parseFloat(price) * UNIT).toString()),
+                new BN((parseFloat(quantity) * UNIT).toString())).signAndSend(alice, {nonce: alice_nonce});
             alice_nonce = alice_nonce + 1;
         }
     });
