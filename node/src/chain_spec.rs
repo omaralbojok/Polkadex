@@ -1,15 +1,15 @@
-use sp_core::{Pair, Public, sr25519};
+use sp_core::{Pair, Public, sr25519, H256};
 use node_polkadex_runtime::{
 	AccountId, BabeConfig,BalancesConfig, GenesisConfig, GrandpaConfig,
 	SudoConfig, SystemConfig, WASM_BINARY, Signature, SessionConfig, StakingConfig, StakerStatus,
-	opaque::SessionKeys, Balance, GenericAssetConfig
+	opaque::SessionKeys, Balance, PolkadexCustomAssetsConfig
 };
 // use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_consensus_babe::{AuthorityId as BabeId};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::traits::{Verify, IdentifyAccount};
 use sc_service::ChainType;
-use sp_runtime::{Perbill};
+use sp_runtime::{Perbill, FixedU128};
 
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -180,14 +180,11 @@ fn testnet_genesis(
 			slash_reward_fraction: Perbill::from_percent(10),
 			.. Default::default()
 		}),
-		pallet_generic_asset: Some(GenericAssetConfig{
-			assets: vec![0],
-			initial_balance: 3*UNIT,
+		polkadex_custom_assets: Some(PolkadexCustomAssetsConfig{
+			assets: vec![H256::random()],
+			initial_balance: FixedU128::from(3*UNIT),
 			endowed_accounts: endowed_accounts
-				.clone().into_iter().map(Into::into).collect(),
-			next_asset_id: 1,
-			staking_asset_id: 0,
-			spending_asset_id: 0
+				.clone().into_iter().map(Into::into).collect()
 		})
 	}
 }

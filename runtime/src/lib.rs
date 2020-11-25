@@ -7,7 +7,7 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 use sp_std::prelude::*;
-use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
+use sp_core::{crypto::KeyTypeId, OpaqueMetadata, H256};
 use sp_runtime::{
 	ApplyExtrinsicResult, generic, create_runtime_str, impl_opaque_keys, MultiSignature,
 	transaction_validity::{TransactionValidity, TransactionSource},
@@ -290,7 +290,8 @@ parameter_types! {
 }
 
 impl pallet_transaction_payment::Trait for Runtime {
-	type Currency = SpendingAssetCurrency<Self>;
+	//type Currency = SpendingAssetCurrency<Self>;
+	type Currency = AssetCurrency<Self,Self>;
 	type OnTransactionPayment = ();
 	type TransactionByteFee = TransactionByteFee;
 	type WeightToFee = IdentityFee<Balance>;
@@ -306,12 +307,15 @@ impl pallet_sudo::Trait for Runtime {
 /// calculation.
 use sp_runtime::traits::Convert;
 use pallet_generic_asset::{SpendingAssetCurrency, StakingAssetCurrency};
+use polkadex_custom_assets::{AssetCurrency, AssetIdProvider};
 use frame_support::traits::Currency;
+
 
 pub struct CurrencyToVoteHandler;
 
 impl CurrencyToVoteHandler {
-	fn factor() -> Balance { (<pallet_generic_asset::StakingAssetCurrency<Runtime>>::total_issuance() / u64::max_value() as Balance).max(1) }
+//	fn factor() -> Balance { (<pallet_generic_asset::StakingAssetCurrency<Runtime>>::total_issuance() / u64::max_value() as Balance).max(1) }
+    fn factor() -> Balance { (<polkadex_custom_assets::AssetCurrency<Runtime, Runtime>>::total_issuance() / u64::max_value() as Balance).max(1) }
 }
 
 impl Convert<Balance, u64> for CurrencyToVoteHandler {
@@ -343,6 +347,18 @@ impl pallet_session::historical::Trait for Runtime {
 	type FullIdentificationOf = pallet_staking::ExposureOf<Runtime>;
 }
 
+impl AssetIdProvider for Runtime {
+
+	type AssetId = H256;
+
+
+	fn asset_id() -> Self::AssetId {
+		let asset_id: H256 = H256::default();
+		asset_id
+	}
+}
+
+
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
 		min_inflation: 0_025_000,
@@ -367,7 +383,8 @@ parameter_types! {
 }
 
 impl pallet_staking::Trait for Runtime {
-	type Currency = StakingAssetCurrency<Self>;
+	//type Currency = StakingAssetCurrency<Self>;
+	type Currency = AssetCurrency<Self, Self>;
 	type UnixTime = Timestamp;
 	type CurrencyToVote = CurrencyToVoteHandler;
 	type RewardRemainder = (); // Treasury
@@ -410,10 +427,23 @@ impl<C> frame_system::offchain::SendTransactionTypes<C> for Runtime where
 	type OverarchingCall = Call;
 }
 
-impl pallet_generic_asset::Trait for Runtime {
+// impl pallet_generic_asset::Trait for Runtime {
+// 	type Balance = Balance;
+// 	type AssetId = u32;
+// 	type Event = Event;
+// }
+
+parameter_types! {
+	/// Cost for Registering a Trading Pair
+	pub const maxlock: u32 = 20;
+	pub const existentialDeposit: u128 = 0u128;
+}
+
+impl polkadex_custom_assets::Trait for Runtime {
 	type Balance = Balance;
-	type AssetId = u32;
 	type Event = Event;
+	type MaxLocks = maxlock;
+	type ExistentialDeposit = existentialDeposit;
 }
 
 parameter_types! {
@@ -442,7 +472,8 @@ construct_runtime!(
 		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Module, Storage},
 		Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
-		GenericAsset: pallet_generic_asset::{Module, Call, Storage, Config<T>, Event<T>},
+		//GenericAsset: pallet_generic_asset::{Module, Call, Storage, Config<T>, Event<T>},
+		PolkadexCustomAssets: polkadex_custom_assets::{Module, Call, Storage, Config<T>, Event<T>},
 		Staking: pallet_staking::{Module, Call, Config<T>, Storage, Event<T>, ValidateUnsigned},
 		Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
 		Historical: pallet_session_historical::{Module},

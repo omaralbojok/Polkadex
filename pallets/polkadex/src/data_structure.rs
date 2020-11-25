@@ -116,8 +116,8 @@ impl<T> Default for LinkedPriceLevel<T> where T: Trait {
 #[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
 pub struct Orderbook<T> where T: Trait {
     pub trading_pair: T::Hash,
-    pub base_asset_id: T::AssetId,
-    pub quote_asset_id: T::AssetId,
+    pub base_asset_id: T::Hash,
+    pub quote_asset_id: T::Hash,
     pub best_bid_price: FixedU128,
     pub best_ask_price: FixedU128,
 }
@@ -126,8 +126,8 @@ impl<T> Orderbook<T> where T: Trait {
     pub fn convert(self) -> Result<OrderbookRpc, ErrorRpc> {
         let orderbook = OrderbookRpc {
             trading_pair: Self::account_to_bytes(&self.trading_pair)?,
-            base_asset_id: TryInto::<u32>::try_into(self.base_asset_id).ok().ok_or(ErrorRpc::AssetIdConversionFailed)?,
-            quote_asset_id: TryInto::<u32>::try_into(self.quote_asset_id).ok().ok_or(ErrorRpc::AssetIdConversionFailed)?,
+            base_asset_id: Self::account_to_bytes(&self.base_asset_id)?,
+            quote_asset_id: Self::account_to_bytes(&self.quote_asset_id)?,
             best_bid_price: Self::convert_fixed_u128_to_balance(self.best_bid_price).ok_or(ErrorRpc::IdMustBe32Byte)?,
             best_ask_price: Self::convert_fixed_u128_to_balance(self.best_ask_price).ok_or(ErrorRpc::IdMustBe32Byte)?,
         };
@@ -158,8 +158,8 @@ impl<T> Default for Orderbook<T> where T: Trait {
     fn default() -> Self {
         Orderbook {
             trading_pair: T::Hash::default(),
-            base_asset_id: 0.into(),
-            quote_asset_id: 0.into(),
+            base_asset_id: T::Hash::default(),
+            quote_asset_id: T::Hash::default(),
             best_bid_price: FixedU128::from(0),
             best_ask_price: FixedU128::from(0),
         }
@@ -167,7 +167,7 @@ impl<T> Default for Orderbook<T> where T: Trait {
 }
 
 impl<T> Orderbook<T> where T: Trait {
-    pub fn new(base_asset_id: T::AssetId, quote_asset_id: T::AssetId, trading_pair: T::Hash) -> Self {
+    pub fn new(base_asset_id: T::Hash, quote_asset_id: T::Hash, trading_pair: T::Hash) -> Self {
         Orderbook {
             trading_pair,
             base_asset_id,

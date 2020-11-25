@@ -9,6 +9,7 @@ version = '2.0.0-rc6'
 #
 [dependencies]
 runtime-api = { default-features = false, path = "../pallets/polkadex/runtime-api" }
+polkadex-custom-assets = { default-features = false , path = "/home/knoldus/Desktop/rust/polkadex-project/polkadex-custom-assets"}
 
 
 [package.metadata.docs.rs]
@@ -223,6 +224,7 @@ std = [
     'pallet-timestamp/std',
     'pallet-transaction-payment/std',
     'pallet-generic-asset/std',
+    'polkadex-custom-assets/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'serde',
     'sp-api/std',

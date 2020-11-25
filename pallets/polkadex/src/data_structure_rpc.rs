@@ -53,8 +53,8 @@ pub struct LinkedPriceLevelRpc {
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct OrderbookRpc {
     pub trading_pair: [u8; 32],
-    pub base_asset_id: u32,
-    pub quote_asset_id: u32,
+    pub base_asset_id: [u8; 32],
+    pub quote_asset_id: [u8; 32],
     pub best_bid_price: Vec<u8>,
     pub best_ask_price: Vec<u8>,
 }

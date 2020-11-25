@@ -2,20 +2,22 @@
 
 use codec::Encode;
 use frame_support::{decl_error, decl_event, decl_module, decl_storage, dispatch, ensure};
-use frame_support::traits::Get;
 use frame_support::weights::Pays;
 use frame_system::ensure_signed;
-use pallet_generic_asset::AssetIdProvider;
 use sp_arithmetic::{FixedPointNumber, FixedU128};
 use sp_arithmetic::traits::{CheckedAdd, CheckedDiv, CheckedMul, CheckedSub, UniqueSaturatedFrom};
 use sp_runtime::traits::Hash;
 use sp_std::collections::vec_deque::VecDeque;
+
+
+use frame_support::traits::{Get, ExistenceRequirement};
 use sp_std::convert::TryInto;
 use sp_std::str;
 use sp_std::vec::Vec;
 
 use crate::data_structure::{LinkedPriceLevel, MarketData, Order, Orderbook, OrderType};
 use crate::data_structure_rpc::{ErrorRpc, LinkedPriceLevelRpc, MarketDataRpc, OrderbookRpc};
+use polkadex_custom_assets::AssetIdProvider;
 
 #[cfg(test)]
 mod mock;
@@ -26,10 +28,10 @@ pub mod data_structure;
 pub mod data_structure_rpc;
 
 
-pub trait Trait: frame_system::Trait + pallet_generic_asset::Trait {
+pub trait Trait: frame_system::Trait + polkadex_custom_assets::Trait {
     type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
 
-    type TradingPairReservationFee: Get<<Self as pallet_generic_asset::Trait>::Balance>;
+    type TradingPairReservationFee: Get<<Self as polkadex_custom_assets::Trait>::Balance>;
 }
 
 decl_event!(
@@ -142,7 +144,7 @@ decl_module! {
         ///  This function returns a status that, new Trading Pair is successfully registered or not.
 
 		#[weight = 10000]
-		pub fn register_new_orderbook(origin, quote_asset_id: u32, base_asset_id: u32) -> dispatch::DispatchResultWithPostInfo{
+		pub fn register_new_orderbook(origin, quote_asset_id: T::Hash, base_asset_id: T::Hash) -> dispatch::DispatchResultWithPostInfo{
 		    let trader = ensure_signed(origin)?;
 
 
@@ -157,7 +159,7 @@ decl_module! {
 
 		    // The origin should reserve a certain amount of SpendingAssetCurrency for registering the pair
 		    ensure!(Self::reserve_balance_registration(&trader), <Error<T>>::InsufficientAssetBalance);
-		    Self::create_order_book(quote_asset_id.into(),base_asset_id.into(),&trading_pair_id);
+		    Self::create_order_book(quote_asset_id, base_asset_id, &trading_pair_id);
 		    Self::deposit_event(RawEvent::TradingPairCreated(trading_pair_id));
 		    Ok(Some(0).into())
 	    }
@@ -339,13 +341,13 @@ impl<T: Trait> Module<T> {
 impl<T: Trait> Module<T> {
     /// Reserves TradingPairReservationFee (defined in configuration trait) balance of SpendingAssetCurrency
     fn reserve_balance_registration(origin: &<T as frame_system::Trait>::AccountId) -> bool {
-        pallet_generic_asset::Module::<T>::reserve(
-            &pallet_generic_asset::SpendingAssetIdProvider::<T>::asset_id(),
-            origin, <T as Trait>::TradingPairReservationFee::get()).is_ok()
+        polkadex_custom_assets::Module::<T>::reserve(
+            origin,polkadex_custom_assets::PolkadexNativeAssetIdProvider::<T>::asset_id()
+            , <T as Trait>::TradingPairReservationFee::get()).is_ok()
     }
 
     /// Initializes a new Orderbook and stores it in the Orderbooks
-    fn create_order_book(quote_asset_id: T::AssetId, base_asset_id: T::AssetId, trading_pair_id: &T::Hash) {
+    fn create_order_book(quote_asset_id: T::Hash, base_asset_id: T::Hash, trading_pair_id: &T::Hash) {
         let orderbook = Orderbook::new(base_asset_id, quote_asset_id, trading_pair_id.clone());
         <Orderbooks<T>>::insert(trading_pair_id, orderbook);
         <AsksLevels<T>>::insert(trading_pair_id, Vec::<FixedU128>::new());
@@ -353,7 +355,7 @@ impl<T: Trait> Module<T> {
     }
 
     /// Creates a TradingPairID from both Asset IDs.
-    fn create_trading_pair_id(quote_asset_id: &u32, base_asset_id: &u32) -> T::Hash {
+    fn create_trading_pair_id(quote_asset_id: &T::Hash, base_asset_id: &T::Hash) -> T::Hash {
         (quote_asset_id, base_asset_id).using_encoded(<T as frame_system::Trait>::Hashing::hash)
     }
 
@@ -396,7 +398,6 @@ impl<T: Trait> Module<T> {
                                 current_order.price <= orderbook.best_bid_price &&
                                 orderbook.best_bid_price != FixedU128::from(0)) {
                             Self::consume_order(&mut current_order, &mut orderbook)?;
-
 
                             if current_order.quantity > FixedU128::from(0) {
                                 Self::insert_order(&current_order, &mut orderbook)?;
@@ -909,7 +910,7 @@ impl<T: Trait> Module<T> {
         Ok(())
     }
     /// Function un-reserves and transfers assets balances between traders
-    fn do_asset_exchange_market(current_order: &mut Order<T>, counter_order: &mut Order<T>, market_data: &mut MarketData, base_assetid: T::AssetId, quote_assetid: T::AssetId) -> Result<(), Error<T>> {
+    fn do_asset_exchange_market(current_order: &mut Order<T>, counter_order: &mut Order<T>, market_data: &mut MarketData, base_assetid: T::Hash, quote_assetid: T::Hash) -> Result<(), Error<T>> {
         if market_data.low == FixedU128::from(0) {
             market_data.low = counter_order.price;
         }
@@ -983,7 +984,7 @@ impl<T: Trait> Module<T> {
     }
 
     /// Function un-reserves and transfers assets balances between traders
-    fn do_asset_exchange(current_order: &mut Order<T>, counter_order: &mut Order<T>, market_data: &mut MarketData, base_assetid: T::AssetId, quote_assetid: T::AssetId) -> Result<(), Error<T>> {
+    fn do_asset_exchange(current_order: &mut Order<T>, counter_order: &mut Order<T>, market_data: &mut MarketData, base_assetid: T::Hash, quote_assetid: T::Hash) -> Result<(), Error<T>> {
         match current_order.order_type {
             OrderType::BidLimit => {
                 if market_data.low == FixedU128::from(0) {
@@ -1071,22 +1072,23 @@ impl<T: Trait> Module<T> {
     }
 
     /// Transfers the balance of traders
-    fn transfer_asset(asset_id: T::AssetId, amount: FixedU128, from: &T::AccountId, to: &T::AccountId) -> Result<(), Error<T>> {
+    fn transfer_asset(asset_id: T::Hash, amount: FixedU128, from: &T::AccountId, to: &T::AccountId) -> Result<(), Error<T>> {
         let amount_balance = Self::convert_fixed_u128_to_balance(amount).ok_or(<Error<T>>::SubUnderflowOrOverflow.into())?;
 
-        pallet_generic_asset::Module::<T>::unreserve(&asset_id, from, amount_balance);
-        match pallet_generic_asset::Module::<T>::make_transfer(&asset_id, from, to,
-                                                               amount_balance) {
+        polkadex_custom_assets::Module::<T>::unreserve(from, asset_id, amount_balance);
+        match polkadex_custom_assets::Module::<T>::transfer(from, to, asset_id,
+                                                            &amount_balance, ExistenceRequirement::KeepAlive) {
+
             Ok(_) => Ok(()),
             _ => Err(<Error<T>>::ErrorWhileTransferingAsset.into()),
         }
     }
 
     /// Transfers the balance of traders
-    fn transfer_asset_current(asset_id: T::AssetId, amount: FixedU128, from: &T::AccountId, to: &T::AccountId) -> Result<(), Error<T>> {
+    fn transfer_asset_current(asset_id: T::Hash, amount: FixedU128, from: &T::AccountId, to: &T::AccountId) -> Result<(), Error<T>> {
         let amount_balance = Self::convert_fixed_u128_to_balance(amount).ok_or(<Error<T>>::SubUnderflowOrOverflow.into())?;
-        match pallet_generic_asset::Module::<T>::make_transfer(&asset_id, from, to,
-                                                               amount_balance) {
+        match polkadex_custom_assets::Module::<T>::transfer(from, to, asset_id,
+                                                            &amount_balance, ExistenceRequirement::KeepAlive) {
             Ok(_) => Ok(()),
             _ => Err(<Error<T>>::ErrorWhileTransferingAsset.into()),
         }
@@ -1108,8 +1110,8 @@ impl<T: Trait> Module<T> {
     fn check_order(order: &Order<T>) -> Result<Orderbook<T>, Error<T>> {
         let orderbook: Orderbook<T> = <Orderbooks<T>>::get(&order.trading_pair);
         let balance: <T>::Balance = match order.order_type {
-            OrderType::BidLimit | OrderType::BidMarket => pallet_generic_asset::Module::<T>::free_balance(&orderbook.base_asset_id, &order.trader),
-            OrderType::AskMarket | OrderType::AskLimit => pallet_generic_asset::Module::<T>::free_balance(&orderbook.quote_asset_id, &order.trader),
+            OrderType::BidLimit | OrderType::BidMarket => polkadex_custom_assets::Module::<T>::free_balance(&order.trader, orderbook.base_asset_id),
+            OrderType::AskMarket | OrderType::AskLimit => polkadex_custom_assets::Module::<T>::free_balance(&order.trader ,orderbook.quote_asset_id),
         };
 
         match Self::convert_balance_to_fixed_u128(balance) {
@@ -1137,12 +1139,12 @@ impl<T: Trait> Module<T> {
     /// Helper function for basic_order_check
     fn reserve_user_balance(orderbook:& Orderbook<T>, order: &Order<T>, amount: FixedU128) -> Result<(), Error<T>> {
         // TODO: Based on BidLimit or AskLimit we need to change between orderbook.base_asset_id & orderbook.quote_asset_id respectively
-        let asset_id = if order.order_type == OrderType::AskLimit { &orderbook.quote_asset_id } else { &orderbook.base_asset_id };
+        let asset_id = if order.order_type == OrderType::AskLimit { orderbook.quote_asset_id } else { orderbook.base_asset_id };
 
         match Self::convert_fixed_u128_to_balance(amount) {
             Some(balance) => {
-                match pallet_generic_asset::Module::<T>::reserve(
-                    asset_id, &order.trader,
+                match polkadex_custom_assets::Module::<T>::reserve(
+                    &order.trader, asset_id,
                     balance) {
                     Ok(_) => Ok(()),
                     _ => Err(<Error<T>>::ReserveAmountFailed.into()),
