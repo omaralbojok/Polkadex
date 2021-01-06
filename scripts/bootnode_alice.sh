@@ -1,4 +1,4 @@
-../target/release/node-polkadex \
+../target/release/polkadex-mainnet \
   --base-path /tmp/alice \
   --chain customSpecRaw.json \
   --alice \
