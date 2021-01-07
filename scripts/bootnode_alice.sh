@@ -1,3 +1,4 @@
+../target/release/polkadex-mainnet purge-chain --base-path /tmp/alice --chain local
 ../target/release/polkadex-mainnet \
   --base-path /tmp/alice \
   --chain customSpecRaw.json \
