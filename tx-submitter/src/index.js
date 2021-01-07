@@ -192,7 +192,8 @@ const main = async () => {
 		nonce += 1;
 	}, 1000/TX_FREQUENCY);
 
-	await sleep(LASTING_SECS * 1000);
+
+	await sleep(LASTING_SECS * 1000000);
 };
 
 main()
