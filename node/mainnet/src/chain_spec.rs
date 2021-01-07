@@ -148,6 +148,7 @@ fn testnet_genesis(
 ) -> GenesisConfig {
 	const STASH: Balance = 100;
 	const UNIT: u128 = 1_000_000_000_000;
+	const ENDOWMENT: Balance = 10_000_000 ;
 	GenesisConfig {
 		frame_system: Some(SystemConfig {
 			// Add Wasm runtime to storage.
@@ -155,8 +156,9 @@ fn testnet_genesis(
 			changes_trie_config: Default::default(),
 		}),
 		pallet_balances: Some(BalancesConfig {
-			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: vec![],
+			balances: endowed_accounts.iter().cloned()
+				.map(|x| (x, ENDOWMENT))
+				.collect()
 		}),
 		pallet_babe: Some(BabeConfig {
 			// authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
