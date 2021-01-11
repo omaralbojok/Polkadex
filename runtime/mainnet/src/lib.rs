@@ -189,7 +189,7 @@ impl frame_system::Config for Runtime {
 	type AccountData = pallet_balances::AccountData<Balance>;
 	/// Weight information for the extrinsics of this pallet.
 	type SystemWeightInfo = ();
-
+	type SS58Prefix = ();
 	type PalletInfo = ();
 	type BlockWeights = MaxBlockWeights;
 	type BlockLength = MaxBlockLength;
@@ -554,6 +554,10 @@ impl_runtime_apis! {
 
 		fn current_epoch() -> sp_consensus_babe::Epoch {
 			Babe::current_epoch()
+		}
+
+		fn next_epoch() -> sp_consensus_babe::Epoch {
+			Babe::next_epoch()
 		}
 
 		fn current_epoch_start() -> sp_consensus_babe::SlotNumber {
