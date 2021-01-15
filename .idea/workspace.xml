@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f97144e7-8781-4c5f-a484-daea171f4ea2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CODE_OF_CONDUCT.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/polkadex/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/polkadex/src/main.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/build.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/src/chain_spec.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/src/cli.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/src/command.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/src/main.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/src/rpc.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/mainnet/src/service.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/build.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/src/chain_spec.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/src/cli.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/src/command.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/src/main.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/src/rpc.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/testnet/src/service.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/generic_asset/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/generic_asset/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/generic_asset/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-custom-assets/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-custom-assets/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-custom-assets/src/imbalances.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-custom-assets/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-custom-assets/src/mock.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-custom-assets/src/tests.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/rpc/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/rpc/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/runtime-api/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/runtime-api/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/src/data_structure.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/src/data_structure_rpc.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/src/mock.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-engine/src/tests.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-identity-pallet/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-identity-pallet/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-identity-pallet/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-identity-pallet/src/mock.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-identity-pallet/src/test.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-uniswap/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-uniswap/Documentation.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-uniswap/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-uniswap/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-uniswap/src/mock.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex-uniswap/src/tests.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/rpc/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/rpc/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/runtime-api/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/runtime-api/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/src/data_structure.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/src/data_structure_rpc.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/src/mock.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pallets/polkadex/src/tests.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/mainnet/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/mainnet/build.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/mainnet/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/testnet/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/testnet/build.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/testnet/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/bootnode_alice.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/createCustomSpec.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/customSpec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/customSpecRaw.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/docker_run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/docker_run.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/init.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/init.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/observer.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/rpc_test.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/validator_bob.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/validator_charlie.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/validator_dave.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server-deploy.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/specifications/rpc.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="2rtk6u0q" />
+  </component>
+  <component name="ProjectId" id="1n40CiutJAfRtmYskFoPMvfx8ol" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
+  </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f97144e7-8781-4c5f-a484-daea171f4ea2" name="Default Changelist" comment="" />
+      <created>1610633955571</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1610633955571</updated>
+    </task>
+    <servers />
+  </component>
+</project>
