@@ -13,5 +13,5 @@ benchmarks! {
     do_something{
         let accountid = account("caller", 0, SEED);
 
-    }:_(RawOrigin::Signed(accountid), 2)
+    }: _(RawOrigin::Signed(accountid), 2)
 }
